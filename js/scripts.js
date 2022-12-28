@@ -45,7 +45,7 @@ const toggleForms = () => {
 }
 
 const updateToDo = (text) => {
-    const toDos = document.querySelectorAll(".toDo")
+    const toDos = document.querySelectorAll(".to-do")
 
     toDos.forEach((toDo) => {
         let toDoTitle = toDo.querySelector("h3")
