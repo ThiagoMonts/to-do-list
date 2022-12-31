@@ -5,11 +5,14 @@ const toDoList = document.querySelector("#to-do-list")
 const editForm = document.querySelector("#edit-form")
 const editInput = document.querySelector("#edit-input")
 const cancelEditBtn = document.querySelector("#cancel-edit-btn")
+const searchInput = document.querySelector("#search-input");
+const eraseBtn = document.querySelector("#erase-button");
+const filterBtn = document.querySelector("#filter-select");
 
 let oldInputValue
 
 // Funções
-const saveToDo = (text) => {
+const saveToDo = (text, done = 0, save = 1) => {
     const toDo = document.createElement("div")
     toDo.classList.add("to-do")
 
@@ -32,16 +35,23 @@ const saveToDo = (text) => {
     deleteBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>'
     toDo.appendChild(deleteBtn)
 
-    toDoList.appendChild(toDo)
+    if (done) {
+        toDo.classList.add("done")
+    }
+
+    if (save) {
+        saveToDoLocalStorage({ text, done: 0 })
+    }
+
+    toDo.List.appendChild(toDo)
 
     toDoInput.value = ""
-    toDoInput.focus()
 }
 
 const toggleForms = () => {
     editForm.classList.toggle("hide")
     toDoForm.classList.toggle("hide")
-    toDoList.classList.toggle("hide") 
+    toDoList.classList.toggle("hide")
 }
 
 const updateToDo = (text) => {
@@ -52,8 +62,52 @@ const updateToDo = (text) => {
 
         if (toDoTitle.innerText === oldInputValue) {
             toDoTitle.innerText = text
+
+            updateToDoLocalStorage(oldInputValue, text)
         }
     })
+}
+
+const getSearchedToDos = (search) => {
+    const toDos = document.querySelectorAll(".to-do")
+
+    toDos.forEach((toDo) => {
+        const toDoTitle = toDo.querySelector("h3").innerText.toLowerCase()
+
+        toDo.style.display = "flex"
+
+        console.log(toDoTitle)
+
+        if (!toDoTitle.includes(search)) {
+            toDo.style.display = "none"
+        }
+    })
+}
+
+const filterToDos = (filterValue) => {
+    const toDos = document.querySelectorAll(".to-do")
+
+    switch (filterValue) {
+        case "all":
+            toDos.forEach((toDo) => (toDo.style.display = "flex"))
+            break
+
+        case "done":
+            toDos.forEach((toDo) =>
+                toDo.classList.contains("done")
+                    ? (toDo.style.display = "flex")
+                    : (toDo.style.display = "none"))
+            break
+
+        case "toDo":
+            toDos.forEach((toDo) =>
+                toDo.classList.contains("done")
+                    ? (toDo.style.display = "flex")
+                    : (toDo.style.display = "none"))
+            break
+        default:
+            break
+    }
 }
 
 //Eventos
@@ -78,10 +132,14 @@ document.addEventListener("click", (e) => {
 
     if (targetEl.classList.contains("finish-to-do")) {
         parentEl.classList.toggle("done")
+
+        updateToDoStatusLocalStorage(toDoTitle)
     }
 
     if (targetEl.classList.contains("remove-to-do")) {
         parentEl.remove()
+
+        removeToDoLocalStorage(toDoTitle)
     }
 
     if (targetEl.classList.contains("edit-to-do")) {
@@ -109,3 +167,75 @@ editForm.addEventListener("submit", (e) => {
 
     toggleForms()
 })
+
+searchInput.addEventListener("keyup", (e) => {
+    const search = e.target.value
+
+    getSearchedToDos(search)
+})
+
+eraseBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    searchInput.value = ""
+
+    searchInput.dispatchEvent(new Event("keyup"))
+})
+
+filterBtn.addEventListener("change", (e) => {
+    const filterValue = e.target.value
+
+    filterToDos(filterValue)
+})
+
+const getToDosLocalStorage = () => {
+    const toDos = JSON.parse(localStorage.getItem("toDos")) || []
+
+    return toDos
+}
+
+const loadToDos = () => {
+    const toDos = getToDosLocalStorage()
+
+    toDos.forEach((toDo) => {
+        saveToDo(toDo.text, toDo.done, 0)
+    })
+}
+
+const saveToDoLocalStorage = (toDo) => {
+    const toDos = getToDosLocalStorage()
+
+    toDos.push(toDo);
+
+    localStorage.setItem("toDos", JSON.stringify(toDos))
+}
+
+const removeToDoLocalStorage = (toDoText) => {
+    const toDos = getToDosLocalStorage()
+
+    const filteredToDos = toDos.filter((toDo) => toDo.text != toDoText)
+
+    localStorage.setItem("toDos", JSON.stringify(filteredToDos));
+}
+
+const updateToDoStatusLocalStorage = (toDoText) => {
+    const toDos = getToDosLocalStorage()
+
+    toDos.map((toDo) =>
+        toDo.text === toDoText ? (toDo.done = !toDo.done) : null
+    )
+
+    localStorage.setItem("toDos", JSON.stringify(toDos))
+}
+
+const updateToDoLocalStorage = (toDoOldText, toDoNewText) => {
+    const toDos = getToDosLocalStorage()
+
+    toDos.map((toDo) =>
+        toDo.text === toDoOldText ? (toDo.text = toDoNewText) : null
+    )
+
+    localStorage.setItem("toDos", JSON.stringify(toDos))
+}
+
+loadToDos()
