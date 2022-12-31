@@ -43,7 +43,7 @@ const saveToDo = (text, done = 0, save = 1) => {
         saveToDoLocalStorage({ text, done: 0 })
     }
 
-    toDo.List.appendChild(toDo)
+    toDoList.appendChild(toDo)
 
     toDoInput.value = ""
 }
@@ -101,10 +101,11 @@ const filterToDos = (filterValue) => {
 
         case "toDo":
             toDos.forEach((toDo) =>
-                toDo.classList.contains("done")
+                toDo.classList.contains("to-do")
                     ? (toDo.style.display = "flex")
                     : (toDo.style.display = "none"))
             break
+
         default:
             break
     }

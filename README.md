@@ -1,6 +1,6 @@
 <h1 align="center"> Lista de tarefas </h1>
 
-Jogo da Velha criado utilizando HTML, CSS e JavaScript, com base nos ensinamentos do [vídeo - Projeto de JavaScript para iniciantes - To Do List com JavaScript puro](https://youtu.be/HSssE1PRQcA) do canal [@MatheusBattisti](https://www.youtube.com/@MatheusBattisti) no Youtube. 
+Lista de tarefas criada utilizando HTML, CSS e JavaScript, com base nos ensinamentos do [vídeo - Projeto de JavaScript para iniciantes - To Do List com JavaScript puro](https://youtu.be/HSssE1PRQcA) do canal [@MatheusBattisti](https://www.youtube.com/@MatheusBattisti) no Youtube. 
 
 <br>
 
@@ -14,7 +14,7 @@ Jogo da Velha criado utilizando HTML, CSS e JavaScript, com base nos ensinamento
 <br>
 
 <p align="center">
-  <img alt="jogo da velha" src=".github/project.png" width="100%">
+  <img alt="lista de tarefas" src=".github/project.png" width="100%">
 </p>
 
 <br>
@@ -32,7 +32,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-A lista de tarefas é uma página da web que permite adicionar, editar, marcar como concluir e excluir tarefas adicionadas a uma lista. Neste projeto foi utilizado apenas HTML, CSS e JavaScript.
+A lista de tarefas é uma página da web que permite adicionar, editar, marcar como concluída e excluir tarefas adicionadas a uma lista, bem como, a ferramenta de busca nas tarefas criadas. Neste projeto foi utilizado apenas HTML, CSS e JavaScript.
 
 <br>
 
